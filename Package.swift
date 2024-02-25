@@ -7,13 +7,13 @@ let package = Package(
     name: "MyLanScanner",
     products: [
         .library(
-            name: "LanScanner",
-            targets: ["LanScanner"]),
+            name: "MyLanScanner",
+            targets: ["MyLanScanner"]),
     ],
     dependencies: [],
     targets: [
         .target(
-            name: "LanScanner",
+            name: "MyLanScanner",
             dependencies: ["LanScanInternal"]
         ),
         .target(
