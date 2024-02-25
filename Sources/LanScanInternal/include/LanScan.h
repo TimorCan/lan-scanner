@@ -29,5 +29,6 @@
 - (id)initWithDelegate:(id<LANScanDelegate>)delegate;
 - (void)start;
 - (void)stop;
+-(NSString*) getRouterIP;
 
 @end

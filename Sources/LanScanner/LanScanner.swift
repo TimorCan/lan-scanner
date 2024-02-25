@@ -21,9 +21,13 @@ public protocol LanScannerDelegate: AnyObject {
     func lanScanDidFinishScanning()
 }
 
-public class LanScanner: NSObject {
+public class MyLanScanner: NSObject {
 
     // MARK: - Properties
+    
+    func getRouterIp() -> String? {
+        return scanner?.getRouterIP()
+    }
 
     public var scanner: LanScan?
     public weak var delegate: LanScannerDelegate?
@@ -51,7 +55,7 @@ public class LanScanner: NSObject {
     }
 }
 
-extension LanScanner: LANScanDelegate {
+extension MyLanScanner: LANScanDelegate {
     public func lanScanHasUpdatedProgress(_ counter: Int, address: String!) {
         let progress = CGFloat(counter) / CGFloat(MAX_IP_RANGE)
         delegate?.lanScanHasUpdatedProgress(progress, address: address)
