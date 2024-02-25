@@ -1,28 +1,28 @@
 //
-//  PingOperation.m
+//  MyPingOperation.m
 //  WhiteLabel-Test
 //
 //  Created by Michael Mavris on 03/11/2016.
 //  Copyright © 2016 Miksoft. All rights reserved.
 //
 
-#import "PingOperation.h"
+#import "MyPingOperation.h"
 #import "LanScan.h"
 
 static const float PING_TIMEOUT = TIMEOUT;
 
-@interface PingOperation ()
+@interface MyPingOperation ()
 @property (nonatomic,strong) NSString *ipStr;
 @property (nonatomic,strong) NSDictionary *brandDictionary;
-@property(nonatomic,strong)SimplePing *simplePing;
+@property(nonatomic,strong)MySimplePing *MySimplePing;
 @property (nonatomic, copy) void (^result)(NSError  * _Nullable error, NSString  * _Nonnull ip);
 @end
 
-@interface PingOperation()
+@interface MyPingOperation()
 - (void)finish;
 @end
 
-@implementation PingOperation {
+@implementation MyPingOperation {
     BOOL _stopRunLoop;
     NSTimer *_keepAliveTimer;
     NSError *errorMessage;
@@ -36,8 +36,8 @@ static const float PING_TIMEOUT = TIMEOUT;
     if (self) {
         self.name = ip;
         _ipStr= ip;
-        _simplePing = [SimplePing simplePingWithHostName:ip];
-        _simplePing.delegate = self;
+        _MySimplePing = [MySimplePing MySimplePingWithHostName:ip];
+        _MySimplePing.delegate = self;
         _result = result;
         _isExecuting = NO;
         _isFinished = NO;
@@ -78,7 +78,7 @@ static const float PING_TIMEOUT = TIMEOUT;
 
 }
 -(void)ping {
-    [self.simplePing start];
+    [self.MySimplePing start];
 }
 - (void)finishedPing {
     
@@ -127,7 +127,7 @@ static const float PING_TIMEOUT = TIMEOUT;
 #pragma mark - Pinger delegate
 
 // When the pinger starts, send the ping immediately
-- (void)simplePing:(SimplePing *)pinger didStartWithAddress:(NSData *)address {
+- (void)MySimplePing:(MySimplePing *)pinger didStartWithAddress:(NSData *)address {
     
     if (self.isCancelled) {
         [self finish];
@@ -137,28 +137,28 @@ static const float PING_TIMEOUT = TIMEOUT;
     [pinger sendPingWithData:nil];
 }
 
-- (void)simplePing:(SimplePing *)pinger didFailWithError:(NSError *)error {
+- (void)MySimplePing:(MySimplePing *)pinger didFailWithError:(NSError *)error {
   
     [pingTimer invalidate];
     errorMessage = error;
     [self finishedPing];
 }
 
-- (void)simplePing:(SimplePing *)pinger didFailToSendPacket:(NSData *)packet error:(NSError *)error {
+- (void)MySimplePing:(MySimplePing *)pinger didFailToSendPacket:(NSData *)packet error:(NSError *)error {
     
     [pingTimer invalidate];
     errorMessage = error;
     [self finishedPing];
 }
 
-- (void)simplePing:(SimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet {
+- (void)MySimplePing:(MySimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet {
    
     [pingTimer invalidate];
     [self finishedPing];
 }
 
-- (void)simplePing:(SimplePing *)pinger didSendPacket:(NSData *)packet {
-    //This timer will fired pingTimeOut in case the SimplePing don't answer in the specific time
+- (void)MySimplePing:(MySimplePing *)pinger didSendPacket:(NSData *)packet {
+    //This timer will fired pingTimeOut in case the MySimplePing don't answer in the specific time
     pingTimer = [NSTimer scheduledTimerWithTimeInterval:PING_TIMEOUT target:self selector:@selector(pingTimeOut:) userInfo:nil repeats:NO];
 }
 

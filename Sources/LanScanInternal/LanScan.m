@@ -19,7 +19,7 @@
 #include "if_ether.h"
 #include "route.h"
 
-#include "PingOperation.h"
+#include "MyPingOperation.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
 
 #define VENDORS_DICTIONARY @"vendors.out"
@@ -158,7 +158,7 @@
     
     if(deviceIPAddress != nil) {
         //ping to check if device is active
-        PingOperation *pingOperation = [[PingOperation alloc]initWithIPToPing:deviceIPAddress andCompletionHandler:^(NSError  * _Nullable error, NSString  * _Nonnull ip) {
+        MyPingOperation *MyPingOperation = [[MyPingOperation alloc]initWithIPToPing:deviceIPAddress andCompletionHandler:^(NSError  * _Nullable error, NSString  * _Nonnull ip) {
             
             if(error == nil) {
                 
@@ -203,7 +203,7 @@
             }
             
         }];
-        [pingOperation start];
+        [MyPingOperation start];
     }
 
     [self.delegate lanScanHasUpdatedProgress:self.currentHostAddress address: deviceIPAddress];

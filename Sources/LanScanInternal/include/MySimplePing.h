@@ -1,5 +1,5 @@
 /*
-    File:       SimplePing.h
+    File:       MySimplePing.h
 
     Contains:   Implements ping.
 
@@ -61,18 +61,18 @@
 
 #include <AssertMacros.h>
 
-#pragma mark * SimplePing
+#pragma mark * MySimplePing
 
-// The SimplePing class is a very simple class that lets you send and receive pings.
+// The MySimplePing class is a very simple class that lets you send and receive pings.
 
-@protocol SimplePingDelegate;
+@protocol MySimplePingDelegate;
 
-@interface SimplePing : NSObject
+@interface MySimplePing : NSObject
 
-+ (SimplePing *)simplePingWithHostName:(NSString *)hostName;        // chooses first IPv4 address
-+ (SimplePing *)simplePingWithHostAddress:(NSData *)hostAddress;    // contains (struct sockaddr)
++ (MySimplePing *)MySimplePingWithHostName:(NSString *)hostName;        // chooses first IPv4 address
++ (MySimplePing *)MySimplePingWithHostAddress:(NSData *)hostAddress;    // contains (struct sockaddr)
 
-@property (nonatomic, weak,   readwrite) id<SimplePingDelegate> delegate;
+@property (nonatomic, weak,   readwrite) id<MySimplePingDelegate> delegate;
 
 @property (nonatomic, copy,   readonly ) NSString *             hostName;
 @property (nonatomic, copy,   readonly ) NSData *               hostAddress;
@@ -88,7 +88,7 @@
     // standard 64 byte ping).  Otherwise pass a non-nil value and it will be appended to the 
     // ICMP header.
     //
-    // Do not try to send a ping before you receive the -simplePing:didStartWithAddress: delegate 
+    // Do not try to send a ping before you receive the -MySimplePing:didStartWithAddress: delegate 
     // callback.
 
 - (void)stop;
@@ -101,17 +101,17 @@
 
 @end
 
-@protocol SimplePingDelegate <NSObject>
+@protocol MySimplePingDelegate <NSObject>
 
 @optional
 
-- (void)simplePing:(SimplePing *)pinger didStartWithAddress:(NSData *)address;
-- (void)simplePing:(SimplePing *)pinger didFailWithError:(NSError *)error;
-- (void)simplePing:(SimplePing *)pinger didSendPacket:(NSData *)packet;
-- (void)simplePing:(SimplePing *)pinger didFailToSendPacket:(NSData *)packet error:(NSError *)error;
-- (void)simplePing:(SimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet;
- - (void)simplePing:(SimplePing *)pinger didReceiveUnexpectedPacket:(NSData *)packet;
-    // Called whenever the SimplePing object receives an ICMP packet that does not 
+- (void)MySimplePing:(MySimplePing *)pinger didStartWithAddress:(NSData *)address;
+- (void)MySimplePing:(MySimplePing *)pinger didFailWithError:(NSError *)error;
+- (void)MySimplePing:(MySimplePing *)pinger didSendPacket:(NSData *)packet;
+- (void)MySimplePing:(MySimplePing *)pinger didFailToSendPacket:(NSData *)packet error:(NSError *)error;
+- (void)MySimplePing:(MySimplePing *)pinger didReceivePingResponsePacket:(NSData *)packet;
+ - (void)MySimplePing:(MySimplePing *)pinger didReceiveUnexpectedPacket:(NSData *)packet;
+    // Called whenever the MySimplePing object receives an ICMP packet that does not 
     // look like a response to one of our pings.
 
 @end

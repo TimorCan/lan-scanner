@@ -1,5 +1,5 @@
  /*
-    File:       SimplePing.m
+    File:       MySimplePing.m
 
     Contains:   Implements ping.
 
@@ -51,7 +51,7 @@
 
 */
 
-#import "SimplePing.h"
+#import "MySimplePing.h"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -101,9 +101,9 @@ static uint16_t in_cksum(const void *buffer, size_t bufferLen)
 	return answer;
 }
 
-#pragma mark * SimplePing
+#pragma mark * MySimplePing
 
-@interface SimplePing ()
+@interface MySimplePing ()
 
 @property (nonatomic, copy,   readwrite) NSData *           hostAddress;
 @property (nonatomic, assign, readwrite) uint16_t           nextSequenceNumber;
@@ -113,7 +113,7 @@ static uint16_t in_cksum(const void *buffer, size_t bufferLen)
 
 @end
 
-@implementation SimplePing
+@implementation MySimplePing
 {
     CFHostRef               _host;
     CFSocketRef             _socket;
@@ -147,16 +147,16 @@ static uint16_t in_cksum(const void *buffer, size_t bufferLen)
     assert(self->_socket == NULL);
 }
 
-+ (SimplePing *)simplePingWithHostName:(NSString *)hostName
++ (MySimplePing *)MySimplePingWithHostName:(NSString *)hostName
     // See comment in header.
 {
-    return [[SimplePing alloc] initWithHostName:hostName address:nil];
+    return [[MySimplePing alloc] initWithHostName:hostName address:nil];
 }
 
-+ (SimplePing *)simplePingWithHostAddress:(NSData *)hostAddress
++ (MySimplePing *)MySimplePingWithHostAddress:(NSData *)hostAddress
     // See comment in header.
 {
-    return [[SimplePing alloc] initWithHostName:NULL address:hostAddress];
+    return [[MySimplePing alloc] initWithHostName:NULL address:hostAddress];
 }
 
 - (void)noop
@@ -177,8 +177,8 @@ static uint16_t in_cksum(const void *buffer, size_t bufferLen)
     [self performSelector:@selector(noop) withObject:nil afterDelay:0.0];
     
     [self stop];
-    if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(simplePing:didFailWithError:)] ) {
-        [self.delegate simplePing:self didFailWithError:error];
+    if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(MySimplePing:didFailWithError:)] ) {
+        [self.delegate MySimplePing:self didFailWithError:error];
     }
 }
 
@@ -272,8 +272,8 @@ static uint16_t in_cksum(const void *buffer, size_t bufferLen)
 
         // Complete success.  Tell the client.
 
-        if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(simplePing:didSendPacket:)] ) {
-            [self.delegate simplePing:self didSendPacket:packet];
+        if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(MySimplePing:didSendPacket:)] ) {
+            [self.delegate MySimplePing:self didSendPacket:packet];
         }
     } else {
         NSError *   error;
@@ -284,8 +284,8 @@ static uint16_t in_cksum(const void *buffer, size_t bufferLen)
             err = ENOBUFS;          // This is not a hugely descriptor error, alas.
         }
         error = [NSError errorWithDomain:NSPOSIXErrorDomain code:err userInfo:nil];
-        if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(simplePing:didFailToSendPacket:error:)] ) {
-            [self.delegate simplePing:self didFailToSendPacket:packet error:error];
+        if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(MySimplePing:didFailToSendPacket:error:)] ) {
+            [self.delegate MySimplePing:self didFailToSendPacket:packet error:error];
         }
     }
     
@@ -398,12 +398,12 @@ static uint16_t in_cksum(const void *buffer, size_t bufferLen)
         // We got some data, pass it up to our client.
 
         if ( [self isValidPingResponsePacket:packet] ) {
-            if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(simplePing:didReceivePingResponsePacket:)] ) {
-                [self.delegate simplePing:self didReceivePingResponsePacket:packet];
+            if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(MySimplePing:didReceivePingResponsePacket:)] ) {
+                [self.delegate MySimplePing:self didReceivePingResponsePacket:packet];
             }
         } else {
-            if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(simplePing:didReceiveUnexpectedPacket:)] ) {
-                [self.delegate simplePing:self didReceiveUnexpectedPacket:packet];
+            if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(MySimplePing:didReceiveUnexpectedPacket:)] ) {
+                [self.delegate MySimplePing:self didReceiveUnexpectedPacket:packet];
             }
         }
     } else {
@@ -426,10 +426,10 @@ static void SocketReadCallback(CFSocketRef s, CFSocketCallBackType type, CFDataR
     // This C routine is called by CFSocket when there's data waiting on our 
     // ICMP socket.  It just redirects the call to Objective-C code.
 {
-    SimplePing *    obj;
+    MySimplePing *    obj;
     
-    obj = (__bridge SimplePing *) info;
-    assert([obj isKindOfClass:[SimplePing class]]);
+    obj = (__bridge MySimplePing *) info;
+    assert([obj isKindOfClass:[MySimplePing class]]);
     
     #pragma unused(s)
     assert(s == obj->_socket);
@@ -496,8 +496,8 @@ static void SocketReadCallback(CFSocketRef s, CFSocketCallBackType type, CFDataR
         
         CFRelease(rls);
 
-        if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(simplePing:didStartWithAddress:)] ) {
-            [self.delegate simplePing:self didStartWithAddress:self.hostAddress];
+        if ( (self.delegate != nil) && [self.delegate respondsToSelector:@selector(MySimplePing:didStartWithAddress:)] ) {
+            [self.delegate MySimplePing:self didStartWithAddress:self.hostAddress];
         }
     }
     assert(fd == -1);
@@ -545,12 +545,12 @@ static void HostResolveCallback(CFHostRef theHost, CFHostInfoType typeInfo, cons
     // This C routine is called by CFHost when the host resolution is complete. 
     // It just redirects the call to the appropriate Objective-C method.
 {
-    SimplePing *    obj;
+    MySimplePing *    obj;
 
  //   NSLog(@">HostResolveCallback");
     
-    obj = (__bridge SimplePing *) info;
-    assert([obj isKindOfClass:[SimplePing class]]);
+    obj = (__bridge MySimplePing *) info;
+    assert([obj isKindOfClass:[MySimplePing class]]);
     
     #pragma unused(theHost)
     assert(theHost == obj->_host);
