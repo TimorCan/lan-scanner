@@ -25,10 +25,6 @@ public class MyLanScanner: NSObject {
 
     // MARK: - Properties
     
-    func getRouterIp() -> String? {
-        return scanner?.getRouterIP()
-    }
-
     public var scanner: LanScan?
     public weak var delegate: LanScannerDelegate?
 
@@ -52,6 +48,10 @@ public class MyLanScanner: NSObject {
 
     public func getCurrentWifiSSID() -> String? {
         nil // scanner?.getCurrentWifiSSID()
+    }
+    
+    public func getRouterIp() -> String? {
+        return scanner?.getRouterIP()
     }
 }
 
