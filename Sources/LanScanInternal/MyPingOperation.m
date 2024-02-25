@@ -14,7 +14,7 @@ static const float PING_TIMEOUT = TIMEOUT;
 @interface MyPingOperation ()
 @property (nonatomic,strong) NSString *ipStr;
 @property (nonatomic,strong) NSDictionary *brandDictionary;
-@property(nonatomic,strong)MySimplePing *MySimplePing;
+@property(nonatomic,strong)MySimplePing *SimplePing;
 @property (nonatomic, copy) void (^result)(NSError  * _Nullable error, NSString  * _Nonnull ip);
 @end
 
@@ -36,8 +36,8 @@ static const float PING_TIMEOUT = TIMEOUT;
     if (self) {
         self.name = ip;
         _ipStr= ip;
-        _MySimplePing = [MySimplePing MySimplePingWithHostName:ip];
-        _MySimplePing.delegate = self;
+        _SimplePing = [MySimplePing MySimplePingWithHostName:ip];
+        _SimplePing.delegate = self;
         _result = result;
         _isExecuting = NO;
         _isFinished = NO;
@@ -78,7 +78,7 @@ static const float PING_TIMEOUT = TIMEOUT;
 
 }
 -(void)ping {
-    [self.MySimplePing start];
+    [self.SimplePing start];
 }
 - (void)finishedPing {
     

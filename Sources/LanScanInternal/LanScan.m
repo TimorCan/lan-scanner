@@ -158,7 +158,8 @@
     
     if(deviceIPAddress != nil) {
         //ping to check if device is active
-        MyPingOperation *MyPingOperation = [[MyPingOperation alloc]initWithIPToPing:deviceIPAddress andCompletionHandler:^(NSError  * _Nullable error, NSString  * _Nonnull ip) {
+        
+        MyPingOperation * PingOperation = [[MyPingOperation alloc]initWithIPToPing:deviceIPAddress andCompletionHandler:^(NSError  * _Nullable error, NSString  * _Nonnull ip) {
             
             if(error == nil) {
                 
