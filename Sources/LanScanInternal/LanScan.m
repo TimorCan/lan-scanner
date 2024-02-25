@@ -204,7 +204,7 @@
             }
             
         }];
-        [MyPingOperation start];
+//        [MyPingOperation start];
     }
 
     [self.delegate lanScanHasUpdatedProgress:self.currentHostAddress address: deviceIPAddress];
